@@ -63,7 +63,10 @@ public class IncomingPackets implements Runnable {
         System.err.println(obj.getUsername());
 
         if(obj.getPacketID()==2)
+        {
             connections.remove(obj.getUsername());
+            System.out.println(obj.getUsername()+" connection removed");
+        }
 
         return obj;
     }
@@ -90,8 +93,7 @@ public class IncomingPackets implements Runnable {
     public void run(){
         byte[] receiveData = new byte[1024];
 
-        while(running)
-        {
+        while(running) {
             System.out.println("waiting for packet");
             packets.add(receive(receiveData));
         }
