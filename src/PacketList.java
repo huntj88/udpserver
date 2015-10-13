@@ -9,13 +9,21 @@ public class PacketList {
     public synchronized void add(Packet packet)
     {
         System.out.println(packet.getUsername());
+
+        if(packet instanceof TextPacket)
+        {
+            System.out.println("text: " + ((TextPacket) packet).getText());
+        }
+
         packetList.add(packet);
     }
 
     public synchronized void remove()
     {
+        System.out.print(packetList.size()+" ");
         if(packetList.size()>0)
         packetList.removeFirst();
+        System.out.println(packetList.size());
     }
 
     public synchronized Packet get()

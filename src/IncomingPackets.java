@@ -40,6 +40,7 @@ public class IncomingPackets implements Runnable {
         DatagramPacket recvPacket = new DatagramPacket(receiveData, receiveData.length);
         try{
             serverSocket.receive(recvPacket);
+            //System.out.println(recvPacket.getPort()+" "+serverSocket.getPort());
             receivedBytes = recvPacket.getLength();
         }catch(IOException e){
             System.err.println("IOException in UdpReceiver.receive");
@@ -59,6 +60,7 @@ public class IncomingPackets implements Runnable {
             System.out.println("new connection "+obj.getUsername());
             connections.add(obj.getUsername(),new Connection(recvPacket.getAddress(),recvPacket.getPort(),obj.getUsername()));
         }
+        System.err.println(obj.getUsername());
         return obj;
     }
 
@@ -88,7 +90,6 @@ public class IncomingPackets implements Runnable {
         {
             System.out.println("waiting for packet");
             packets.add(receive(receiveData));
-
         }
     }
 }

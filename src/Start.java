@@ -24,6 +24,13 @@ public class Start{
             e.printStackTrace();
         }
 
+        /*while(serverSocket.getPort()==-1)
+        {
+
+        }*/
+
+        System.out.println(serverSocket.getLocalPort());
+
         IncomingPackets incomingPackets = new IncomingPackets(connections,packets,serverSocket);
         OutgoingPackets outgoingPackets = new OutgoingPackets(connections,packets,serverSocket);
 

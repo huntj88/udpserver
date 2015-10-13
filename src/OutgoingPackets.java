@@ -30,7 +30,7 @@ public class OutgoingPackets implements Runnable {
 
     public void send() {
 
-        System.out.println("send attempt");
+        System.out.println("send attempt "+packets.size());
         byte[] sendData = serializeManagerPacket(packets.get());
 
         Iterator it = connections.entrySet().iterator();
@@ -38,25 +38,18 @@ public class OutgoingPackets implements Runnable {
             Map.Entry pair = (Map.Entry)it.next();
             //System.out.println(pair.getKey() + " = " + pair.getValue());
             Connection temp = (Connection)pair.getValue();
+            System.out.println(temp.getIP()+" "+temp.getPort());
             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, temp.getIP(), temp.getPort());
             try {
                 serverSocket.send(sendPacket);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            packets.remove();
             System.out.println("sent");
             //it.remove(); // avoids a ConcurrentModificationException
         }
-
-        /*for(Connection c:connections) {
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, c.getIP(), c.getPort());
-            try {
-                serverSocket.send(sendPacket);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
+        System.out.println("packet removed "+packets.size());
+        packets.remove();
     }
 
     public byte[] serializeManagerPacket(Packet mp) {
@@ -82,6 +75,12 @@ public class OutgoingPackets implements Runnable {
         while (running) {
             if(packets.size()>0)
                 send();
+            else
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
         }
     }
 }
