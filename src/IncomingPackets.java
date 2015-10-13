@@ -61,6 +61,10 @@ public class IncomingPackets implements Runnable {
             connections.add(obj.getUsername(),new Connection(recvPacket.getAddress(),recvPacket.getPort(),obj.getUsername()));
         }
         System.err.println(obj.getUsername());
+
+        if(obj.getPacketID()==2)
+            connections.remove(obj.getUsername());
+
         return obj;
     }
 
