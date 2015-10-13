@@ -2,6 +2,8 @@ import gui.GUI;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.net.DatagramSocket;
+import java.net.SocketException;
 
 /**
  * Created by James on 10/12/2015.
@@ -13,7 +15,18 @@ public class Start{
 
     public static void main(String[] cows)
     {
-        IncomingPackets incomingPackets = new IncomingPackets();
+        ConnectionMap connections = new ConnectionMap();
+        PacketList packets = new PacketList();
+        DatagramSocket serverSocket = null;
+        try {
+            serverSocket = new DatagramSocket(9876);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        IncomingPackets incomingPackets = new IncomingPackets(connections,packets,serverSocket);
+        OutgoingPackets outgoingPackets = new OutgoingPackets(connections,packets,serverSocket);
+
     }
 
     public void setUpGui()

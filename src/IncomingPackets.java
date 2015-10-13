@@ -13,12 +13,15 @@ import java.net.SocketException;
 public class IncomingPackets implements Runnable {
 
     private boolean running = true;
-    private DatagramSocket serverSocket=null;
-    ConnectionMap connections = new ConnectionMap();
-    PacketList packets = new PacketList();
+    DatagramSocket serverSocket=null;
+    ConnectionMap connections;
+    PacketList packets;
 
-    public IncomingPackets()
+    public IncomingPackets(ConnectionMap connections,PacketList packets,DatagramSocket serverSocket)
     {
+        this.connections=connections;
+        this.packets=packets;
+        this.serverSocket=serverSocket;
         new Thread(this).start();
     }
 
@@ -51,6 +54,11 @@ public class IncomingPackets implements Runnable {
 
         Packet obj = deserializeManagerPacket(receiveData);
 
+        if(!connections.contains(obj.getUsername()))
+        {
+            System.out.println("new connection "+obj.getUsername());
+            connections.add(obj.getUsername(),new Connection(recvPacket.getAddress(),recvPacket.getPort(),obj.getUsername()));
+        }
         return obj;
     }
 
@@ -74,11 +82,6 @@ public class IncomingPackets implements Runnable {
 
     @Override
     public void run(){
-        try {
-            serverSocket = new DatagramSocket(9876);
-        } catch (SocketException e) {
-            e.printStackTrace();
-        }
         byte[] receiveData = new byte[1024];
 
         while(running)

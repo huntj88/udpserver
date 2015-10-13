@@ -14,11 +14,17 @@ public class PacketList {
 
     public synchronized void remove()
     {
+        if(packetList.size()>0)
         packetList.removeFirst();
     }
 
     public synchronized Packet get()
     {
         return packetList.get(0);
+    }
+
+    public synchronized int size()
+    {
+        return packetList.size();
     }
 }

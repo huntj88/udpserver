@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by James on 10/12/2015.
@@ -23,5 +25,15 @@ public class ConnectionMap {
     public synchronized void remove(String username)
     {
         connected.remove(username);
+    }
+
+    public synchronized boolean contains(String username)
+    {
+        return connected.containsKey(username);
+    }
+
+    public synchronized Set<Map.Entry<String,Connection>> entrySet()
+    {
+        return connected.entrySet();
     }
 }
